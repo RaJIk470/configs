@@ -1,0 +1,17 @@
+- image viewer
+  feh
+- vp
+  mpv
+- terminal
+  alacritty
+- screeshot
+  xclip + scrot
+- font
+  ttf-fira-code
+- text-editor
+  vim, nvim
+- browser
+  firefox
+- terminal-multiplexor
+  tmux
+
