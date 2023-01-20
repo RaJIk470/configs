@@ -9,8 +9,10 @@
 
 import XMonad
 import XMonad.Util.Run
+import XMonad.Util.Dzen
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.WindowSwallowing
+import XMonad.Actions.Volume
 import XMonad.Layout.Spacing
 import Data.Monoid
 import System.Exit
@@ -61,6 +63,7 @@ myFocusedBorderColor = "#a0c3d2"
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
 --
+alert = dzenConfig return . show
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- launch a terminal
@@ -119,7 +122,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Deincrement the number of windows in the master area
     , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
-
+    
+    -- volume
+    , ((modm               , xK_F2), lowerVolume 5 >>= alert)
+    , ((modm               , xK_F3), raiseVolume 5 >>= alert)
+    , ((modm               , xK_F1), toggleMute >> return ())
     -- Toggle the status bar gap
     -- Use this binding with avoidStruts from Hooks.ManageDocks.
     -- See also the statusBar function from Hooks.DynamicLog.
@@ -251,7 +258,6 @@ myStartupHook = return ()
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
-
 -- Run xmonad with the settings you specify. No need to modify this.
 --
 main = do 
