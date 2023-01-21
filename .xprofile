@@ -1,0 +1,5 @@
+#!/bin/sh
+
+xwallpaper --zoom ~/Pictures/wall.jpg
+setxkbmap -layout us,ru -variant ,winkeys -option grp:win_space_toggle
+picom -b
