@@ -80,10 +80,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm .|. shiftMask, xK_c     ), kill)
 
      -- Rotate through the available layout algorithms
-    , ((modm,               xK_space ), sendMessage NextLayout)
+    , ((modm,               xK_w ), sendMessage NextLayout)
 
     --  Reset the layouts on the current workspace to default
-    , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
+    , ((modm .|. shiftMask, xK_w ), setLayout $ XMonad.layoutHook conf)
 
     -- Resize viewed windows to the correct size
     , ((modm,               xK_n     ), refresh)
@@ -267,7 +267,8 @@ myStartupHook = return ()
 -- Run xmonad with the settings you specify. No need to modify this.
 --
 main = do 
-  xmproc <- spawnPipe "xmobar /home/rajik/.config/xmobar/xmobarrc"
+  xmproc <- spawnPipe "polybar --config=~/.config/polybarrc"
+  -- xmproc <- spawnPipe "xmobar /home/rajik/.config/xmobar/xmobarrc"
   xmonad $ docks defaults
 
 -- A structure containing your configuration settings, overriding

@@ -1,5 +1,7 @@
 call plug#begin('~/.vim/plugged')
   Plug 'junegunn/goyo.vim'
+  Plug 'godlygeek/tabular' | Plug 'plasticboy/vim-markdown'
+  Plug 'iamcco/markdown-preview.nvim', {'do': 'cd app & yarn install'}
   "Plug 'junegunn/limelight.vim'
   Plug 'scrooloose/nerdtree'
   Plug 'kaicataldo/material.vim', { 'branch': 'main' } "Plug 'octol/vim-cpp-enhanced-highlight'
