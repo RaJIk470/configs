@@ -10,6 +10,7 @@
 import XMonad
 import XMonad.Util.Run
 import XMonad.Util.Dzen
+import XMonad.Util.SpawnOnce
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.WindowSwallowing
 import XMonad.Hooks.EwmhDesktops
@@ -261,14 +262,15 @@ myLogHook = return ()
 -- per-workspace layout choices.
 --
 -- By default, do nothing.
-myStartupHook = return ()
+myStartupHook = do
+  spawnOnce "nm-applet &"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
 -- Run xmonad with the settings you specify. No need to modify this.
 --
 main = do 
-  xmproc <- spawnPipe "polybar --config=~/.config/polybarrc"
+  xmproc <- spawnPipe "killall -q polybar && polybar --config=~/.config/polybarrc"
   -- xmproc <- spawnPipe "xmobar /home/rajik/.config/xmobar/xmobarrc"
   xmonad $ docks $ ewmh defaults
 

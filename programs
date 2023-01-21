@@ -12,10 +12,10 @@
   vim, nvim
 - browser
   firefox
-- terminal-multiplexor
+- terminal-multiplexer
   tmux
 - compositor
-  compton
+  picom
 - desktop image
   nitrogen, fen actually, actually xwallpaper
 - doc viewer
@@ -24,3 +24,7 @@
   lux
 - status bar
   polybar i think
+- usb automount
+  simple-usb-automount-git
+- network applet
+  network-manager-applet
