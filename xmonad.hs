@@ -78,6 +78,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- take screenshot
     , ((modm,               xK_s     ), spawn "scrot '/tmp/%F_%T_$wx$h.png' -e 'xclip -selection clipboard -target image/png -i $f'")
 
+    , ((modm .|. shiftMask, xK_s     ), spawn "scrot --focused '/tmp/%F_%T_$wx$h.png' -e 'xclip -selection clipboard -target image/png -i $f'")
+
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
 
