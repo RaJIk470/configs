@@ -12,6 +12,7 @@ import XMonad.Util.Run
 import XMonad.Util.Dzen
 import XMonad.Util.SpawnOnce
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.SetWMName
 import XMonad.Hooks.WindowSwallowing
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Actions.Volume
@@ -265,14 +266,16 @@ myLogHook = return ()
 --
 -- By default, do nothing.
 myStartupHook = do
+  setWMName "LG3D"
   spawnOnce "nm-applet &"
+  spawnOnce "polybar --config=~/.config/polybarrc &"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
 -- Run xmonad with the settings you specify. No need to modify this.
 --
 main = do 
-  xmproc <- spawnPipe "killall -q polybar && polybar --config=~/.config/polybarrc"
+  -- xmproc <- spawnPipe "killall -q polybar && polybar --config=~/.config/polybarrc"
   -- xmproc <- spawnPipe "xmobar /home/rajik/.config/xmobar/xmobarrc"
   xmonad $ docks $ ewmh defaults
 
