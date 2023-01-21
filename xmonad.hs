@@ -12,6 +12,7 @@ import XMonad.Util.Run
 import XMonad.Util.Dzen
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.WindowSwallowing
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Actions.Volume
 import XMonad.Layout.Spacing
 import Graphics.X11.ExtraTypes.XF86
@@ -54,7 +55,7 @@ myModMask       = mod4Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
+myWorkspaces    = ["web", "soc", "code", "term", "tmp"]
 
 -- Border colors for unfocused and focused windows, respectively.
 --
@@ -269,7 +270,7 @@ myStartupHook = return ()
 main = do 
   xmproc <- spawnPipe "polybar --config=~/.config/polybarrc"
   -- xmproc <- spawnPipe "xmobar /home/rajik/.config/xmobar/xmobarrc"
-  xmonad $ docks defaults
+  xmonad $ docks $ ewmh defaults
 
 -- A structure containing your configuration settings, overriding
 -- fields in the default config. Any you don't override, will
