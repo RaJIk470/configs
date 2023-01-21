@@ -14,6 +14,7 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.WindowSwallowing
 import XMonad.Actions.Volume
 import XMonad.Layout.Spacing
+import Graphics.X11.ExtraTypes.XF86
 import Data.Monoid
 import System.Exit
 
@@ -35,7 +36,7 @@ myClickJustFocuses = False
 
 -- Width of the window border in pixels.
 --
-myBorderWidth   = 2
+myBorderWidth   = 4
 
 -- modMask lets you specify which modkey you want to use. The defaulh
 -- is mod1Mask ("left alt").  You may also consider using mod3Mask
@@ -59,7 +60,7 @@ myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
 --
 myNormalBorderColor  = "#eae0da"
 -- myFocusedBorderColor = "#ff0000"
-myFocusedBorderColor = "#a0c3d2"
+myFocusedBorderColor = "#4682b4"
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
 --
@@ -70,7 +71,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
 
     -- launch dmenu
-    , ((modm,               xK_p     ), spawn "dmenu_run")
+    , ((modm,               xK_p     ), spawn "dmenu_run -fn 'FiraCode -22'")
 
     -- take screenshot
     , ((modm,               xK_s     ), spawn "scrot '/tmp/%F_%T_$wx$h.png' -e 'xclip -selection clipboard -target image/png -i $f'")
@@ -107,6 +108,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Swap the focused window with the previous window
     , ((modm .|. shiftMask, xK_k     ), windows W.swapUp    )
+
+    -- brightness
+    , ((modm,               xK_F4), spawn "lux -s 10%")
+    , ((modm,               xK_F5), spawn "lux -a 10%")
+
 
     -- Shrink the master area
     , ((modm,               xK_h     ), sendMessage Shrink)
