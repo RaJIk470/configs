@@ -14,4 +14,11 @@
   firefox
 - terminal-multiplexor
   tmux
-
+- compositor
+  compton
+- desktop image
+  nitrogen, fen actually, actually xwallpaper
+- doc viewer
+  zathura
+- brightness
+  lux
