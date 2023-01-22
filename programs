@@ -30,3 +30,7 @@
   network-manager-applet
 - shell
   zsh + oh_my_zsh or fish
+- bootiful output
+  bat
+- calc
+  insect

@@ -112,14 +112,14 @@ let g:limelight_conceal_ctermfg = 'gray'
 let g:limelight_conceal_ctermfg = 240
 
 set noruler
+set noshowmode
+set noshowcmd
 
 set relativenumber
 set number
 
 set laststatus=0
 set shortmess=F
-set noshowmode
-set noshowcmd
 
 "hi! NonText ctermfg=bg guifg=bg
 filetype plugin on

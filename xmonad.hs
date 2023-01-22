@@ -233,10 +233,11 @@ myLayout = spacingWithEdge 14 $ avoidStruts (tiled ||| Mirror tiled ||| Full)
 -- 'className' and 'resource' are used below.
 --
 myManageHook = composeAll
-    [ className =? "MPlayer"        --> doFloat
-    , className =? "Gimp"           --> doFloat
-    , resource  =? "desktop_window" --> doIgnore
-    , resource  =? "kdesktop"       --> doIgnore ]
+    [ className =? "MPlayer"         --> doFloat
+    , className =? "Gimp"            --> doFloat
+    , title =? "Media viewer"        --> doFloat
+    , resource  =? "desktop_window"  --> doIgnore
+    , resource  =? "kdesktop"        --> doIgnore ]
 
 ------------------------------------------------------------------------
 -- Event handling
