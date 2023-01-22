@@ -121,7 +121,7 @@ set shortmess=F
 set noshowmode
 set noshowcmd
 
-hi! NonText ctermfg=bg guifg=bg
+"hi! NonText ctermfg=bg guifg=bg
 filetype plugin on
 
 set path+=**

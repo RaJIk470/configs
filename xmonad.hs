@@ -51,7 +51,7 @@ myModMask       = mod4Mask
 -- The default number of workspaces (virtual screens) and their names.
 -- By default we use numeric strings, but any string may be used as a
 -- workspace name. The number of workspaces is determined by the length
--- of this list.
+-- of this list.  
 --
 -- A tagging example:
 --
@@ -67,7 +67,7 @@ myFocusedBorderColor = "#4682b4"
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
 --
-alert = dzenConfig return . show
+--alert = dzenConfig return . show
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- launch a terminal
@@ -106,7 +106,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm,               xK_m     ), windows W.focusMaster  )
 
     -- Swap the focused window and the master window
-    , ((modm,               xK_Return), windows W.swapMaster)
+   , ((modm,               xK_Return), windows W.swapMaster)
 
     -- Swap the focused window with the next window
     , ((modm .|. shiftMask, xK_j     ), windows W.swapDown  )
@@ -135,8 +135,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
     
     -- volume
-    , ((modm               , xK_F2), lowerVolume 5 >>= alert)
-    , ((modm               , xK_F3), raiseVolume 5 >>= alert)
+    , ((modm               , xK_F2), lowerVolume 5 >>= return ())
+    , ((modm               , xK_F3), raiseVolume 5 >>= return ())
     , ((modm               , xK_F1), toggleMute >> return ())
     -- Toggle the status bar gap
     -- Use this binding with avoidStruts from Hooks.ManageDocks.
@@ -268,7 +268,7 @@ myLogHook = return ()
 myStartupHook = do
   setWMName "LG3D"
   spawnOnce "nm-applet &"
-  spawnOnce "polybar --config=~/.config/polybarrc &"
+  spawnOnce "polybar --config=/home/rajik/.config/polybarrc &"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
