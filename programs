@@ -19,7 +19,7 @@
 - desktop image
   nitrogen, fen actually, actually xwallpaper
 - doc viewer
-  zathura
+  zathura + plug for pdf
 - brightness
   lux
 - status bar
@@ -34,3 +34,12 @@
   bat
 - calc
   insect
+- just simple clock for flexxxx
+  tty-clock-git aur
+- neofetch and pfetch
+- audio visualizer
+  cava
+- note taking app
+  neovim + vimwiki
+- showing pressing keys
+  screenkey

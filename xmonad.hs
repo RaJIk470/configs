@@ -11,15 +11,20 @@ import XMonad
 import XMonad.Util.Run
 import XMonad.Util.Dzen
 import XMonad.Util.SpawnOnce
+import XMonad.Util.Types
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.WindowSwallowing
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Actions.Volume
+import XMonad.Actions.FloatKeys
 import XMonad.Layout.Spacing
 import Graphics.X11.ExtraTypes.XF86
 import Data.Monoid
 import System.Exit
+
+import Data.Ratio ((%))
 
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -39,7 +44,7 @@ myClickJustFocuses = False
 
 -- Width of the window border in pixels.
 --
-myBorderWidth   = 4
+myBorderWidth   = 3
 
 -- modMask lets you specify which modkey you want to use. The defaulh
 -- is mod1Mask ("left alt").  You may also consider using mod3Mask
@@ -57,17 +62,23 @@ myModMask       = mod4Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces    = ["web", "soc", "code", "term", "tmp"]
+--myWorkspaces    = ["web", "soc", "code", "term", "tmp"]
+myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
 -- Border colors for unfocused and focused windows, respectively.
 --
-myNormalBorderColor  = "#eae0da"
+--myNormalBorderColor  = "#eae0da"
+--myFocusedBorderColor = "#4682b4"
 -- myFocusedBorderColor = "#ff0000"
-myFocusedBorderColor = "#4682b4"
+
+myNormalBorderColor  = "#282828"
+myFocusedBorderColor = "#fbf1c7"
+toggleFloat w = windows (\s -> if M.member w (W.floating s) then W.sink w s else (W.float w (W.RationalRect (0.25) (0.25) (0.5) (0.5)) s))
+
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
 --
---alert = dzenConfig return . show
+alert = dzenConfig return . show
 myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- launch a terminal
@@ -76,19 +87,27 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- launch dmenu
     , ((modm,               xK_p     ), spawn "dmenu_run -fn 'FiraCode -22'")
 
+    --screenkey
+    , ((modm .|. mod1Mask,   xK_s     ), spawn "screenkey -t 1 -p fixed -g 15%x5%+85%-1%")
+
+    , ((modm, xK_f     ), spawn "slop")
+
+    , ((modm .|. mod1Mask,   xK_x     ), spawn "killall screenkey")
+
     -- take screenshot
     , ((modm,               xK_s     ), spawn "scrot '/tmp/%F_%T_$wx$h.png' -e 'xclip -selection clipboard -target image/png -i $f'")
 
-    , ((modm .|. shiftMask, xK_s     ), spawn "scrot --focused '/tmp/%F_%T_$wx$h.png' -e 'xclip -selection clipboard -target image/png -i $f'")
+    , ((modm .|. shiftMask, xK_s     ), spawn "scrot '/tmp/%F_%T_$wx$h.png' -s -e 'xclip -selection clipboard -target image/png -i $f'")
+
 
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
 
      -- Rotate through the available layout algorithms
-    , ((modm,               xK_w ), sendMessage NextLayout)
+    , ((modm,               xK_m ), sendMessage NextLayout)
 
     --  Reset the layouts on the current workspace to default
-    , ((modm .|. shiftMask, xK_w ), setLayout $ XMonad.layoutHook conf)
+    , ((modm .|. shiftMask, xK_m ), setLayout $ XMonad.layoutHook conf)
 
     -- Resize viewed windows to the correct size
     , ((modm,               xK_n     ), refresh)
@@ -102,8 +121,22 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Move focus to the previous window
     , ((modm,               xK_k     ), windows W.focusUp  )
 
+    , ((shiftMask .|. modm,               xK_equal     ), withFocused (keysResizeWindow (20, 20) (1%2, 1%2)))
+    , ((modm,               xK_minus     ), withFocused (keysResizeWindow (-20, -20) (1%2, 1%2)))
+
+    , ((modm .|. controlMask,  xK_h     ), withFocused (keysResizeWindow (-20, 0) (0, 0)))
+    , ((modm .|. controlMask,  xK_j     ), withFocused (keysResizeWindow (0, 20) (0, 0)))
+    , ((modm .|. controlMask,  xK_k     ), withFocused (keysResizeWindow (0, -20) (0, 0)))
+    , ((modm .|. controlMask,  xK_l     ), withFocused (keysResizeWindow (20, 0) (0, 0)))
+
+    --, ((modm .|. mod1Mask,  xK_h     ), withFocused (floatLocation W))
+    --, ((modm .|. mod1Mask,  xK_j     ), withFocused (keysResizeWindow (0, 20) (0, 0)))
+    --, ((modm .|. mod1Mask,  xK_k     ), withFocused (keysResizeWindow (0, -20) (0, 0)))
+    --, ((modm .|. mod1Mask,  xK_l     ), withFocused (keysResizeWindow (20, 0) (0, 0)))
+
+
     -- Move focus to the master window
-    , ((modm,               xK_m     ), windows W.focusMaster  )
+    --, ((modm,               xK_m     ), windows W.focusMaster  )
 
     -- Swap the focused window and the master window
    , ((modm,               xK_Return), windows W.swapMaster)
@@ -113,6 +146,10 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Swap the focused window with the previous window
     , ((modm .|. shiftMask, xK_k     ), windows W.swapUp    )
+
+    , ((modm .|. shiftMask, xK_f     ), withFocused toggleFloat)
+
+
 
     -- brightness
     , ((modm,               xK_F4), spawn "lux -s 10%")
@@ -135,8 +172,8 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm              , xK_period), sendMessage (IncMasterN (-1)))
     
     -- volume
-    , ((modm               , xK_F2), lowerVolume 5 >>= return ())
-    , ((modm               , xK_F3), raiseVolume 5 >>= return ())
+    , ((modm               , xK_F2), lowerVolume 5 >>= alert)
+    , ((modm               , xK_F3), raiseVolume 5 >>= alert)
     , ((modm               , xK_F1), toggleMute >> return ())
     -- Toggle the status bar gap
     -- Use this binding with avoidStruts from Hooks.ManageDocks.
@@ -172,7 +209,6 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
         | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
-
 ------------------------------------------------------------------------
 -- Mouse bindings: default actions bound to mouse events
 --
@@ -203,7 +239,8 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = spacingWithEdge 14 $ avoidStruts (tiled ||| Mirror tiled ||| Full)
+myLayout = spacingWithEdge 6 $ avoidStruts (tiled ||| Mirror tiled ||| Full)
+--myLayout = tiled ||| Mirror tiled ||| Full
   where
      -- default tiling algorithm partitions the screen into two panes
      tiled   = Tall nmaster delta ratio
@@ -235,6 +272,8 @@ myLayout = spacingWithEdge 14 $ avoidStruts (tiled ||| Mirror tiled ||| Full)
 myManageHook = composeAll
     [ className =? "MPlayer"         --> doFloat
     , className =? "Gimp"            --> doFloat
+    , className =? "org-example-Main"     --> doFloat
+    , className =? "org-example-Game"     --> doFloat
     , title =? "Media viewer"        --> doFloat
     , resource  =? "desktop_window"  --> doIgnore
     , resource  =? "kdesktop"        --> doIgnore ]
@@ -268,7 +307,7 @@ myLogHook = return ()
 -- By default, do nothing.
 myStartupHook = do
   setWMName "LG3D"
-  spawnOnce "nm-applet &"
+  --spawnOnce "nm-applet &"
   spawnOnce "polybar --config=/home/rajik/.config/polybarrc &"
 
 ------------------------------------------------------------------------
